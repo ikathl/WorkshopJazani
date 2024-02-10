@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Jazani.Application\Jazani.Application.csproj" />
-    <ProjectReference Include="..\Jazani.Domain\Jazani.Domain.csproj" />
     <ProjectReference Include="..\Jazani.Infraestructure\Jazani.Infrastructure.csproj" />
   </ItemGroup>
 
