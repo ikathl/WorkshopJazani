@@ -1,6 +1,5 @@
 using Jazani.Application.Admins.Dtos.AreaTypes.Profiles;
-using Jazani.Application.Admins.Services;
-using Jazani.Application.Admins.Services.Implementations;
+using Jazani.Application.Cores.Contexts;
 using Jazani.Infrastructure.Cores.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,11 +19,10 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 //builder.Services.AddTransient<IAreaTypeRepository, AreaTypeRepository>();
 
 //Application
-builder.Services.AddTransient<IAreaTypeService,AreaTypeService>();
+builder.Services.AddAplicationService();
 
 
 //Automapper
-builder.Services.AddAutoMapper(typeof(AreaTypeProfile));
 
 
 
