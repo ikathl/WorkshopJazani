@@ -1,6 +1,5 @@
-﻿using Jazani.Domain.Admins.Models;
-using Jazani.Domain.Admins.Repositories;
-using Microsoft.AspNetCore.Http;
+﻿using Jazani.Application.Admins.Dtos.AreaTypes;
+using Jazani.Application.Admins.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jazani.Api.Controllers.Admins
@@ -9,21 +8,20 @@ namespace Jazani.Api.Controllers.Admins
     [ApiController]
     public class AreaTypeController : ControllerBase
     {
-        private readonly IAreaTypeRepository _areaTypeRepository;
-
-        public AreaTypeController(IAreaTypeRepository areaTypeRepository)
+        private readonly IAreaTypeService _areaTypeService;
+        public AreaTypeController(IAreaTypeService areaTypeService)
         {
-            _areaTypeRepository = areaTypeRepository;
+            _areaTypeService = areaTypeService;
         }
         [HttpGet]
-        public async Task<IEnumerable<AreaType>>Get()
+        public async Task<IEnumerable<AreaTypeSmallDto>>Get()
         {
-            return await _areaTypeRepository.FindAllAsync();    
+            return await _areaTypeService.FindAllAsync();    
         }
         [HttpGet("{id}")]
-        public async Task<AreaType>GetById(int id)
+        public async Task<AreaTypeDto>GetById(int id)
         {
-            return await _areaTypeRepository.FindByIdAsync(id);
+            return await _areaTypeService.FindByIdAsync(id);
         }
     }
 }
