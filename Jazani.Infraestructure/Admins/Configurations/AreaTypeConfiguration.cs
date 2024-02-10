@@ -4,7 +4,7 @@ using Jazani.Domain.Admins.Models;
 
 namespace Jazani.Infrastructure.Admins.Configurations
 {
-    public class AreaTypeConfiguration
+    public class AreaTypeConfiguration:IEntityTypeConfiguration<AreaType>
     {
         public void Configure(EntityTypeBuilder<AreaType>builder) {
             builder.ToTable("areatype","adm");

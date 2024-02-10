@@ -1,3 +1,7 @@
+using Jazani.Domain.Admins.Repositories;
+using Jazani.Infrastructure.Admins.Persistences;
+using Jazani.Infrastructure.Cores.Contexts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +13,10 @@ builder.Services.AddSwaggerGen();
 
 //infrastructure
 //builder.Services.AddDbContext;
+builder.Services.AddDbContext<ApplicationDbContext>();
+
+//domain-Infraestrcuture
+builder.Services.AddTransient<IAreaTypeRepository, AreaTypeRepository>();
 
 
 var app = builder.Build();
