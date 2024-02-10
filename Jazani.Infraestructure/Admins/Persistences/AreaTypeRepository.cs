@@ -24,9 +24,18 @@ namespace Jazani.Infrastructure.Admins.Persistences
             return await _dbContext.AreaTypes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<AreaType> SaveAsync(AreaType areaType)
+        public async Task<AreaType> SaveAsync(AreaType areaType)
         {
-            throw new NotImplementedException();
+            EntityState entityState = _dbContext.Entry(areaType).State;
+            
+            _ = entityState switch
+            {
+                EntityState.Detached => _dbContext.AreaTypes.Add(areaType),
+                EntityState.Modified => _dbContext.AreaTypes.Update(areaType),
+                
+            };
+            await _dbContext.SaveChangesAsync();
+            return areaType;
         }
     }
 }

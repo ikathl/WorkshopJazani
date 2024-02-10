@@ -8,6 +8,8 @@ namespace Jazani.Application.Admins.Dtos.AreaTypes.Profiles
         public AreaTypeProfile() { 
             CreateMap<AreaType,AreaTypeDto>();
             CreateMap<AreaType,AreaTypeSmallDto>();
+            CreateMap<AreaType,AreaTypeSaveDto>().ReverseMap();
+
         }
     }
 }
