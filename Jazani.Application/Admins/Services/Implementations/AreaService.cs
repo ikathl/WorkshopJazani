@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Jazani.Application.Admins.Dtos.Areas;
+using Jazani.Application.Cores.Exceptions;
 using Jazani.Domain.Admins.Models;
 using Jazani.Domain.Admins.Repositories;
 using Microsoft.Extensions.Logging;
@@ -50,6 +51,7 @@ namespace Jazani.Application.Admins.Services.Implementations
             if (Area == null)
             {
                 //completar
+                throw AreaNotFoundException(id);
             }
             _mapper.Map<AreaSaveDto, Area>(saveDto, Area);
             Area AreaSaved = await _AreaRepository.SaveAsync(Area);
@@ -70,11 +72,15 @@ namespace Jazani.Application.Admins.Services.Implementations
             _logger.LogInformation("area:" + area?.Id);
             if (area == null)
             {
-                //completar
+                throw AreaNotFoundException(id);
                 _logger.LogWarning("[Area Service]-[FindIdAsync]: No se encontro un registro de Area para el id:" + id);
             }
             AreaDto AreaDto = _mapper.Map<AreaDto>(area);
             return AreaDto;
+        }
+        private NotFoundCoreException AreaNotFoundException(int id)
+        {
+            return new NotFoundCoreException("No se encontro el registro de Tipo");
         }
     }
 }
