@@ -1,6 +1,7 @@
 ﻿using Jazani.Domain.Admins.Models;
 using Jazani.Infrastructure.Admins.Configurations;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Jazani.Infrastructure.Cores.Contexts
 {
@@ -15,14 +16,9 @@ namespace Jazani.Infrastructure.Cores.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new AreaTypeConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-
-        #region "DbSet"
-
-        public DbSet<AreaType> AreaTypes { get; set; }
-        #endregion
 
 
     }

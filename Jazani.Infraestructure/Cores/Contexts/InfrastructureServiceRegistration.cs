@@ -18,7 +18,7 @@ namespace Jazani.Infrastructure.Cores.Contexts
             });
 
             //Domain-infrastructure
-            services.AddTransient<IAreaTypeRepository, AreaTypeRepository>();
+            //services.AddTransient<IAreaTypeRepository, IAreaTypeRepository>();
 
 
             return services;
