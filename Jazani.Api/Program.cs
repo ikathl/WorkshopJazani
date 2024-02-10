@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Jazani.Application.Admins.Dtos.AreaTypes.Profiles;
 using Jazani.Application.Cores.Contexts;
 using Jazani.Infrastructure.Cores.Contexts;
@@ -22,7 +24,13 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddAplicationService();
 
 
-//Automapper
+//AutoFac
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(options =>
+    {
+        options.RegisterModule(new InfraestructureAutofacModule());
+        options.RegisterModule(new ApplicationAutofacModule());
+    });
 
 
 
