@@ -30,7 +30,7 @@ namespace Jazani.Api.Controllers.Admins
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AreaTypeDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorValidationModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorValidationResponse))]
 
         public async Task<Results<BadRequest,CreatedAtRoute<AreaTypeDto>>> Post([FromBody] AreaTypeSaveDto saveDto)
         {
@@ -40,8 +40,7 @@ namespace Jazani.Api.Controllers.Admins
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AreaTypeDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorModel))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorValidationModel))]
-
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorValidationResponse))]
         public async Task<Results<NotFound,BadRequest,Ok<AreaTypeDto>>> Put(int id, [FromBody] AreaTypeSaveDto saveDto)
         {
             var response =await _areaTypeService.EditAsync(id, saveDto);

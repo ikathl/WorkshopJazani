@@ -1,6 +1,7 @@
-﻿using Jazani.Application.Admins.Dtos.Areas;
+﻿using Jazani.Api.Exceptions;
+using Jazani.Application.Admins.Dtos.Areas;
 using Jazani.Application.Admins.Services;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jazani.Api.Controllers.Admins
@@ -20,24 +21,39 @@ namespace Jazani.Api.Controllers.Admins
             return await _areaService.FindAllAsync();
         }
         [HttpGet("{id}")]
-        public async Task<AreaDto> GetById(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AreaDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorModel))]
+        public async Task<Results<NotFound, Ok<AreaDto>>> Get(int id)
         {
-            return await _areaService.FindByIdAsync(id);
+            var response = await _areaService.FindByIdAsync(id);
+            return TypedResults.Ok(response);
         }
         [HttpPost]
-        public async Task<AreaDto> Post([FromBody] AreaSaveDto saveDto)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AreaDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorValidationResponse))]
+
+        public async Task<Results<BadRequest, CreatedAtRoute<AreaDto>>> Post([FromBody] AreaSaveDto saveDto)
         {
-            return await _areaService.CreateAsync(saveDto);
+            var response = await _areaService.CreateAsync(saveDto);
+            return TypedResults.CreatedAtRoute(response);
         }
         [HttpPut("{id}")]
-        public async Task<AreaDto> Put(int id, [FromBody] AreaSaveDto saveDto)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AreaDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorValidationResponse))]
+        public async Task<Results<NotFound, BadRequest, Ok<AreaDto>>> Put(int id, [FromBody] AreaSaveDto saveDto)
         {
-            return await _areaService.EditAsync(id, saveDto);
+            var response = await _areaService.EditAsync(id, saveDto);
+            return TypedResults.Ok(response);
         }
         [HttpDelete("{id}")]
-        public async Task<AreaDto> Delete(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AreaDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ErrorModel))]
+        public async Task<Results<NotFound, Ok<AreaDto>>> Delete(int id)
         {
-            return await _areaService.DisabledAsync(id);
+            var response = await _areaService.DisabledAsync(id);
+
+            return TypedResults.Ok(response);
         }
     }
 }

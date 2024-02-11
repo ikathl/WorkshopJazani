@@ -15,7 +15,7 @@ namespace Jazani.Api.Filters
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value?.Errors.Select(x => x.ErrorMessage))
                     .ToList();
 
-                ErrorResponse errorResponse = new ErrorResponse();
+                ErrorValidationResponse errorResponse = new ErrorValidationResponse();
                 errorResponse.Message = "Ingrese todos los campos requeridos";
                 errorResponse.Errors = new List<ErrorValidationModel>();
 
