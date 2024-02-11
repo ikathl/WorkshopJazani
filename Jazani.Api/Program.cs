@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Jazani.Api.Filters;
 using Jazani.Api.Middlewares;
 using Jazani.Application.Cores.Contexts;
 using Jazani.Infrastructure.Cores.Contexts;
@@ -10,8 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
     .WriteTo.Console(LogEventLevel.Information)
     .WriteTo.File(
-        path:".." + Path.DirectorySeparatorChar + "loggapi.log",
-        restrictedToMinimumLevel:LogEventLevel.Warning,
+        path: ".." + Path.DirectorySeparatorChar + "loggapi.log",
+        restrictedToMinimumLevel: LogEventLevel.Warning,
         rollingInterval: RollingInterval.Day
     ).CreateLogger();
 
@@ -19,7 +20,20 @@ var logger = new LoggerConfiguration()
 builder.Logging.AddSerilog(logger);
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new ValidationFilter());
+}).ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = false;
+});
+
+//
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,6 +59,12 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 
 //api
 builder.Services.AddTransient<ExceptionMiddleware>();
+
+//fluent validation
+//builder.Services
+//    .AddFluentValidationRulesToSwagger()
+//    .AddFluentValidationRulesToSwagger();
+
 
 var app = builder.Build();
 
