@@ -6,9 +6,9 @@ namespace Jazani.Application.Admins.Services
     {
         Task<IReadOnlyList<AreaTypeSmallDto>> FindAllAsync();
         Task<AreaTypeDto> FindByIdAsync(int id);
-        Task<AreaTypeDto>CreateAsync(AreaTypeSaveDto areaTypeSmallDto);
-        Task<AreaTypeDto> EditAsync(int id, AreaTypeSaveDto areaTypeSaveDto);
-        Task<AreaTypeDto> DisabledAsync(int id);
+        Task<AreaTypeSimpleDto> CreateAsync(AreaTypeSaveDto areaTypeSmallDto);
+        Task<AreaTypeSimpleDto> EditAsync(int id, AreaTypeSaveDto areaTypeSaveDto);
+        Task<AreaTypeSimpleDto> DisabledAsync(int id);
 
     }
 }

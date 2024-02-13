@@ -18,18 +18,18 @@ namespace Jazani.Application.Admins.Services.Implementations
             _logger = logger;
         }
 
-        public async Task<AreaDto> CreateAsync(AreaSaveDto saveDto)
+        public async Task<AreaSimpleDto> CreateAsync(AreaSaveDto saveDto)
         {
             Area Area = _mapper.Map<Area>(saveDto);
             Area.RegistrationDate = DateTime.Now;
             Area.State = true;
 
             Area AreaSaved = await _AreaRepository.SaveAsync(Area);
-            AreaDto AreaDto = _mapper.Map<AreaDto>(AreaSaved);
+            AreaSimpleDto AreaDto = _mapper.Map<AreaSimpleDto>(AreaSaved);
             return AreaDto;
         }
 
-        public async Task<AreaDto> DisabledAsync(int id)
+        public async Task<AreaSimpleDto> DisabledAsync(int id)
         {
             Area? Area = await _AreaRepository.FindByIdAsync(id);
             _logger.LogInformation("area:" + Area);
@@ -40,11 +40,11 @@ namespace Jazani.Application.Admins.Services.Implementations
             }
             Area.State = false;
             Area AreaSaved = await _AreaRepository.SaveAsync(Area);
-            AreaDto AreaDto = _mapper.Map<AreaDto>(AreaSaved);
+            AreaSimpleDto AreaDto = _mapper.Map<AreaSimpleDto>(AreaSaved);
             return AreaDto;
         }
 
-        public async Task<AreaDto> EditAsync(int id, AreaSaveDto saveDto)
+        public async Task<AreaSimpleDto> EditAsync(int id, AreaSaveDto saveDto)
         {
             Area? Area = await _AreaRepository.FindByIdAsync(id);
             
@@ -55,7 +55,7 @@ namespace Jazani.Application.Admins.Services.Implementations
             }
             _mapper.Map<AreaSaveDto, Area>(saveDto, Area);
             Area AreaSaved = await _AreaRepository.SaveAsync(Area);
-            AreaDto AreaDto = _mapper.Map<AreaDto>(AreaSaved);
+            AreaSimpleDto AreaDto = _mapper.Map<AreaSimpleDto>(AreaSaved);
             return AreaDto;
         }
 

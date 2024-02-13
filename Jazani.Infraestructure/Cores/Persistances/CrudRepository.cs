@@ -1,6 +1,7 @@
 ﻿using Jazani.Domain.Cores.Repositories;
 using Jazani.Infrastructure.Cores.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Jazani.Infrastructure.Cores.Persistances
 {
@@ -34,5 +35,44 @@ namespace Jazani.Infrastructure.Cores.Persistances
             await _dbContext.SaveChangesAsync();
             return entity;
         }
+        public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate,
+            List<Expression<Func<T, object>>> includes = null, bool disableTracking = true)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (includes is not null)
+            {
+                query = includes.Aggregate(query, (current, include)
+                    => current.Include(include));
+            }
+
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<IReadOnlyList<T>> FindAllAsync(Expression<Func<T, bool>> predicate,
+            List<Expression<Func<T, object>>> includes = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            if (includes is not null)
+            {
+                query = includes.Aggregate(query, (current, include)
+                    => current.Include(include));
+            }
+
+            if (orderBy is not null)
+            {
+                query = orderBy(query);
+            }
+
+            return await query.Where(predicate).ToListAsync();
+        }
     }
 }
+

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Jazani.Domain.Admins.Models
 {
     public class Area
@@ -14,5 +9,8 @@ namespace Jazani.Domain.Admins.Models
         public string? Description { get; set; }
         public DateTime RegistrationDate { get; set; }
         public bool State { get; set; }
+
+        //relations
+        public virtual AreaType AreaType { get; set; }
     }
 }

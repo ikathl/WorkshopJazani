@@ -4,20 +4,23 @@ using Jazani.Api.Filters;
 using Jazani.Api.Middlewares;
 using Jazani.Application.Cores.Contexts;
 using Jazani.Infrastructure.Cores.Contexts;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
 var logger = new LoggerConfiguration()
     .WriteTo.Console(LogEventLevel.Information)
     .WriteTo.File(
-        path: ".." + Path.DirectorySeparatorChar + "loggapi.log",
+        path: ".." + Path.DirectorySeparatorChar + "logapi.log",
         restrictedToMinimumLevel: LogEventLevel.Warning,
         rollingInterval: RollingInterval.Day
-    ).CreateLogger();
-
+    )
+    .CreateLogger();
 
 builder.Logging.AddSerilog(logger);
+
 // Add services to the container.
 
 builder.Services.AddControllers(options =>
@@ -26,9 +29,10 @@ builder.Services.AddControllers(options =>
 }).ConfigureApiBehaviorOptions(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
+
 });
 
-//
+// RouteOptions
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
@@ -38,18 +42,14 @@ builder.Services.Configure<RouteOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//infrastructure inyeccion de dependencia
-//builder.Services.AddDbContext;
+// Infrastructure
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-//domain-Infraestrcuture
-//builder.Services.AddTransient<IAreaTypeRepository, AreaTypeRepository>();
-
-//Application
+// Application
 builder.Services.AddAplicationService();
 
 
-//AutoFac
+//Autofact
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(options =>
     {
@@ -57,13 +57,14 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
         options.RegisterModule(new ApplicationAutofacModule());
     });
 
-//api
+// Api
 builder.Services.AddTransient<ExceptionMiddleware>();
 
-//fluent validation
-//builder.Services
-//    .AddFluentValidationRulesToSwagger()
-//    .AddFluentValidationRulesToSwagger();
+
+// FluentValidation
+builder.Services
+    .AddFluentValidationRulesToSwagger()
+    .AddFluentValidationRulesToSwagger();
 
 
 var app = builder.Build();
@@ -75,6 +76,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Middleware
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();

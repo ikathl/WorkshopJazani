@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Jazani.Domain.Admins.Models
+﻿namespace Jazani.Domain.Admins.Models
 {
     public class AreaType
     {
@@ -13,6 +7,8 @@ namespace Jazani.Domain.Admins.Models
         public string?  Description{ get; set; }
         public DateTime RegistrationDate { get; set; }
         public bool State { get;set; }
+        //
+        public virtual ICollection<Area> Areas { get; set; }
 
     }
 }
